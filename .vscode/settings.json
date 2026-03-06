@@ -3,5 +3,17 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
+  },
+  "errorLens.fontSize": "11px",
+  "errorLens.fontWeight": "normal",
+  "errorLens.margin": "0 0 0 1rem",
+  "errorLens.followCursor": "allLines",
+  "errorLens.enabledDiagnosticLevels": ["error"],
+  "errorLens.alignMessage": {
+    "start": 0,
+    "end": 0,
+    "minimumMargin": 4,
+    "padding": [0, 0],
+    "useFixedPosition": true
   }
 }
