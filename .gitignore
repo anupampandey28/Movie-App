@@ -7,37 +7,89 @@ node_modules/
 .expo/
 dist/
 web-build/
-expo-env.d.ts
 
 # Native
+*.orig
+*.rej
+*.bak
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# Xcode
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# Android/IntelliJ
+.idea/
+.gradle/
+local.properties
+*.iml
+*.hprof
+
+# node.js
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# local env files
+.env*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary folders
+tmp/
+temp/
+
+# Expo RSA keys
+*.pem
+
+# Generated native folders
+/ios
+/android
+
+# Metro
+.metro-health-check*
+
+# Kotlin
 .kotlin/
-*.orig.*
+
+# Native certificates
 *.jks
 *.p8
 *.p12
 *.key
 *.mobileprovision
 
-# Metro
-.metro-health-check*
-
-# debug
+# Debug logs
 npm-debug.*
 yarn-debug.*
 yarn-error.*
-
-# macOS
-.DS_Store
-*.pem
-
-# local env files
-.env*.local
-
-# typescript
-*.tsbuildinfo
-
-app-example
-
-# generated native folders
-/ios
-/android
