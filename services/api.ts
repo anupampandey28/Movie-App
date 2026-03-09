@@ -16,12 +16,33 @@ export const fetchMovies = async ({query}:{query:string}) =>{
     method:"GET",
     headers:MOVIEDB_CONFIG.headers,
   })
+  
 
   if(!res.ok){
-    throw new Error('Failed to fetch movies'  , res.statusText);
+    throw new Error(`Failed to fetch movies, ${res?.statusText}`);
   }
 
   const data = await res.json()
 
   return data.results;
 }
+
+
+// Fetch Movie Details By id
+export const FetchMovieData = async (id: string):Promise<MovieDetails> => {
+  try {
+    const res = await fetch(`${MOVIEDB_CONFIG.BASE_URL}/movie/${id}`, {
+      method: "GET",
+      headers: MOVIEDB_CONFIG.headers,
+    });
+  
+    if (!res.ok) {
+      throw new Error(`Failed to fetch movie data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+    throw(error)
+  }
+};

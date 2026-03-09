@@ -1,26 +1,40 @@
 import MovieCard from "@/components/MovieCard";
-import SearchBar from "@/components/SearchBar";
+import TrendingCard from "@/components/TrendingCard";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import { fetchMovies } from "@/sevices/api";
-import useFetch from "@/sevices/useFetch";
+import { fetchMovies } from "@/services/api";
+import { getTrendingMovies } from "@/services/appwrite";
+import useFetch from "@/services/useFetch";
+import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
-import { ActivityIndicator, FlatList, Image, ScrollView, Text, View } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import {
+    ActivityIndicator,
+    FlatList,
+    Image,
+    ScrollView,
+    Text,
+    View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Index = () => {
-  const router = useRouter();
-  const [search , setSearch] = useState("")
-  const {
+
+ const {
+  data: trendingMovie,
+  loading: trendingMovieLoading,
+  error: trendingMovieError,
+} = useFetch(getTrendingMovies)
+
+
+  const {    
     data: movies,
     loading: moviesLoading,
     error: moviesError,
-    refetch:refetcgMovies,
   } = useFetch(() =>
     fetchMovies({
-      query: search,
-    }),false
+      query: "",
+    }),
   );
   return (
     <SafeAreaView className="flex-1 bg-primary">
@@ -34,43 +48,56 @@ const Index = () => {
         }}
       >
         <Image source={icons.logo} className="w-12 h-10 mx-auto mt-20 mb-5" />
-        {moviesLoading ? (
+        {moviesLoading || trendingMovieLoading ?(
           <ActivityIndicator
             size="large"
             color="#0000FF"
             className="mt-10 self-center"
           />
-        ) : moviesError ? (
-          <Text>Error: {moviesError?.message}</Text>
+        ) : moviesError || trendingMovieError ? (
+          <Text className="text-white">Error: {moviesError?.message|| trendingMovieError?.message}</Text>
         ) : (
           <View>
-            <SearchBar
-            onPress={()=>{}}
-              value={search}
-              onChangeText={setSearch}
-              placeholder="Search for a movie"
-            />
-            <>
-            <Text className="font-bold text-white text-lg mt-5 mb-3">Latest Movies</Text>
-            <FlatList
-            data={movies}
-            renderItem={({item})=>(
-              <MovieCard {...item}/>
-            )}
-            keyExtractor={(item)=>item.id.toString()}
-            numColumns={3}
-            scrollEnabled={false}
-            columnWrapperStyle={
-              {
-                justifyContent:"flex-start",
-                gap:20,
-                paddingRight:5,
-                marginBottom:10,
-              }
-            }
-            className="mt-2 pb-32"
-            />
             
+
+            {(trendingMovie?.length ?? 0) > 0  && (
+              <View className="mt-10">
+              <Text className="font-bold text-white text-lg mt-5 mb-3">
+                Trending Movies
+              </Text>
+                <FlatList 
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                className="mb-4 mt-3 "
+                ItemSeparatorComponent={()=><View className="w-4"/>}
+                data={trendingMovie}
+                renderItem={({item , index})=>(
+                  <TrendingCard movie={item} index={index} />
+                )}
+                keyExtractor={(item)=>item.movie_id.toString()}
+                />
+              </View>
+            )
+          }
+            <>
+              <Text className="font-bold text-white text-lg mt-5 mb-3">
+                Latest Movies
+              </Text>
+              <FlatList
+                data={movies}
+                renderItem={({ item }) => <MovieCard {...item} />}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={3}
+                
+                scrollEnabled={false}
+                columnWrapperStyle={{
+                  justifyContent: "flex-start",
+                  columnGap:16,
+                  
+                  marginBottom: 10,
+                }}
+                className="mt-2 pb-32"
+              />
             </>
           </View>
         )}
